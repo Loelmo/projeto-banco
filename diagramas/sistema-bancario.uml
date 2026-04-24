@@ -1,0 +1,51 @@
+@startuml
+
+abstract class Conta {
+    - String numero
+    - Cliente cliente
+    # Number saldo
+    - Transacao[] historico
+    + depositar(valor : Number) : void
+    + sacar(valor : Number) : boolean
+    + transferir(valor : Number, contaDestino : Conta) : void
+    + {abstract} exibirExtrato() : void
+    + toJSON() : Object
+}
+
+class Cliente {
+    - String nome
+    - String cpf
+    - String email
+    + get nome() : String
+    + get email() : String
+    + toJSON() : Object
+}
+
+class Transacao {
+    - Date data
+    - Number valor
+    - String tipo
+    - String descricao
+    + {static} criarTransferencia(valor : Number) : Transacao[]
+    + toJSON() : Object
+}
+
+class ContaCorrente {
+    - Number limite
+    + sacar(valor : Number) : boolean
+    + exibirExtrato() : void
+}
+
+class ContaPoupanca {
+    - Number taxaRendimento
+    + renderJuros() : void
+    + exibirExtrato() : void
+}
+
+Conta <|-- ContaCorrente
+Conta <|-- ContaPoupanca
+
+Cliente "1" -- "0..*" Conta : Associação (possui)
+Conta "1" *-- "0..*" Transacao : Composição (extrato)
+
+@enduml

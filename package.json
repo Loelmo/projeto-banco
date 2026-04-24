@@ -1,0 +1,18 @@
+{
+  "name": "sistema-bancario-simplificado",
+  "version": "1.0.0",
+  "description": "Projeto final de TypeScript - Turma 1680",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Antigravity AI",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0"
+  }
+}
