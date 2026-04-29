@@ -16,8 +16,22 @@ class Cliente {
     - String nome
     - String cpf
     - String email
+    - Endereco endereco
     + get nome() : String
+    + set nome(novoNome : String) : void
     + get email() : String
+    + set email(novoEmail : String) : void
+    + toJSON() : Object
+    + {static} fromJSON(json : String) : Cliente
+}
+
+class Endereco {
+    - String logradouro
+    - String numero
+    - String bairro
+    - String cidade
+    - String cep
+    - String complemento
     + toJSON() : Object
 }
 
@@ -45,7 +59,8 @@ class ContaPoupanca {
 Conta <|-- ContaCorrente
 Conta <|-- ContaPoupanca
 
-Cliente "1" -- "0..*" Conta : Associação (possui)
-Conta "1" *-- "0..*" Transacao : Composição (extrato)
+Cliente "1" *-- "0..1" Endereco : Composição
+Cliente "1" -- "0..*" Conta : Associação
+Conta "1" *-- "0..*" Transacao : Composição
 
 @enduml

@@ -1,41 +1,49 @@
 import { Cliente } from "./Cliente.js";
 import { ContaCorrente } from "./ContaCorrente.js";
 import { ContaPoupanca } from "./ContaPoupanca.js";
+import { Endereco } from "./Endereco.js";
 
-console.log("=== INICIANDO SIMULAÇÃO BANCÁRIA ===\n");
+console.log("=== INICIANDO SIMULAÇÃO BANCÁRIA ATUALIZADA (AULA 07) ===\n");
 
-// 1. Criar Clientes
-const cliente1 = new Cliente("João Silva", "123.456.789-00", "joao@email.com");
-const cliente2 = new Cliente("Maria Oliveira", "987.654.321-11", "maria@email.com");
+// 1. Criar Endereços
+const end1 = new Endereco("Av. Paulista", "1000", "Bela Vista", "São Paulo", "01310-100");
+const end2 = new Endereco("Rua das Flores", "123", "Centro", "Curitiba", "80000-000", "Apto 42");
 
-console.log(`Clientes criados: ${cliente1.nome} e ${cliente2.nome}\n`);
+// 2. Criar Clientes com Endereço e Validação
+console.log("--- Cadastro de Clientes ---");
+const cliente1 = new Cliente("João Silva", "123.456.789-00", "joao@email.com", end1);
+const cliente2 = new Cliente("Maria Oliveira", "987.654.321-11", "maria@email.com", end2);
 
-// 2. Criar Contas
+console.log("\n--- Testando Validação de Nome Curto ---");
+const clienteInvalido = new Cliente("Jo", "000.000.000-00", "erro@email.com"); 
+// Deve mostrar erro de nome curto
+
+console.log("\n--- Testando Validação de Email Inválido ---");
+cliente1.email = "email_sem_arroba"; 
+// Deve mostrar erro de email
+
+// 3. Criar Contas
 const contaJoao = new ContaCorrente("1010-1", cliente1, 1000);
 const contaMaria = new ContaPoupanca("2020-2", cliente2);
 
-// 3. Operações na conta do João
-console.log("--- Operações João ---");
+// 4. Operações
+console.log("\n--- Operações ---");
 contaJoao.depositar(500);
-contaJoao.sacar(200);
-contaJoao.sacar(1500); // Testando limite de cheque especial
-contaJoao.sacar(5000); // Testando erro de saldo/limite insuficiente
-
-// 4. Operações na conta da Maria
-console.log("\n--- Operações Maria ---");
 contaMaria.depositar(1000);
-contaMaria.renderJuros();
-
-// 5. Transferência
-console.log("\n--- Transferência ---");
 contaMaria.transferir(300, contaJoao);
 
-// 6. Exibir Extratos
+// 5. Exibir Extratos (Polimorfismo em ação)
 contaJoao.exibirExtrato();
 contaMaria.exibirExtrato();
 
-// 7. Demonstração de Serialização (toJSON)
-console.log("--- Demonstração JSON (Serialização) ---");
-console.log(JSON.stringify(contaJoao.toJSON(), null, 2));
+// 6. Testando Serialização e Desserialização (Novo da Aula 07)
+console.log("\n--- Testando Serialização (Objeto -> JSON) ---");
+const clienteJSON = JSON.stringify(cliente1.toJSON(), null, 2);
+console.log(clienteJSON);
+
+console.log("\n--- Testando Desserialização (JSON -> Novo Objeto) ---");
+const clienteRecriado = Cliente.fromJSON(clienteJSON);
+console.log(`Nome do cliente recriado: ${clienteRecriado.nome}`);
+console.log(`Cidade do endereço recriado: ${clienteRecriado.endereco?.cidade}`);
 
 console.log("\n=== FIM DA SIMULAÇÃO ===");
